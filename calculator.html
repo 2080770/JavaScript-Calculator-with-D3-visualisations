@@ -15,9 +15,9 @@
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class = "active" id = "design1-li"><a href="#" id = "design1" class="design-change" onclick="change_design('design1.css')">Design 1</a></li>
-                    <li id = "design2-li"><a href="#" id = "design2" class="design-change" onclick="change_design('design2.css')">Design 2</a></li>
-                    <li id = "design3-li"><a href="#" id = "design3" class="design-change" onclick="change_design('design3.css')">Design 3</a></li>
+                    <li class = "active" id = "design1-li"><a href="#" id = "design1">Design 1</a></li>
+                    <li id = "design2-li"><a href="#" id = "design2">Design 2</a></li>
+                    <li id = "design3-li"><a href="#" id = "design3">Design 3</a></li>
                 </ul>
             </div>
         </div>
@@ -51,45 +51,46 @@
                                 <td colspan="6"><input type = "text" id = "input1" class="display-input" disabled></td>
                             </tr>
                             <tr>
+                                <td><input type="button" class="operator"  value = "^"/></td>
+                                <td><input type="button" class="operator"  value = "!"/></td>
+                                <td><input type="button" class="operator" value = "("/></td>
+                                <td><input type="button" class="operator" value = ")"/></td>
+                                <td><input type="button" class="operator"  value = "%"/></td>
+                                <td><input type="button" class="operator"  id = "delete1" value = "CE"/></td>
+                            </tr>
+                            <tr>
+                                <td><button class="operator" value = "sin(">sin</button></td>
+                                <!--<td><input type="button" class="operator"  value = "sin"/></td>-->
 
-                                <td><input type="button" class="operator" onclick="add('^')" value = "^"/></td>
-                                <td><input type="button" class="operator" onclick="add('!')" value = "!"/></td>
-                                <td><input type="button" class="operator" onclick="add('(')" value = "("/></td>
-                                <td><input type="button" class="operator" onclick="add(')')" value = ")"/></td>
-                                <td><input type="button" class="operator" onclick="add('%')" value = "%"/></td>
-                                <td><input type="button" class="operator" onclick="del()" id = "delete1" value = "CE"/></td>
+                                <td><button class="operator" value = "ln(">ln</button></td>
+                                <td><input type="button" class="custom" value = "7"/></td>
+                                <td><input type="button" class="custom" value = "8"/></td>
+                                <td><input type="button" class="custom"  value = "9"/></td>
+                                <td><input type="button" class="operator"  value = "÷"/></td>
                             </tr>
                             <tr>
-                                <td><input type="button" class="operator" onclick="add('sin')" value = "sin"/></td>
-                                <td><input type="button" class="operator" onclick="add('ln')" value = "ln"/></td>
-                                <td><input type="button" class="custom" onclick="add('7')" value = "7"/></td>
-                                <td><input type="button" class="custom" onclick="add('8')" value = "8"/></td>
-                                <td><input type="button" class="custom" onclick="add('9')" value = "9"/></td>
-                                <td><input type="button" class="operator" onclick="add('÷')" value = "÷"/></td>
+                                <td><button class="operator" value = "cos(">cos</button></td>
+                                <td><button class="operator" value = "log(">log</button></td>
+                                <td><input type="button" class="custom"  value = "4"/></td>
+                                <td><input type="button" class="custom"  value = "5"/></td>
+                                <td><input type="button" class="custom" value = "6"/></td>
+                                <td><input type="button" class="operator"  value = "×"/></td>
                             </tr>
                             <tr>
-                                <td><input type="button" class="operator" onclick="add('cos(')" value = "cos"/></td>
-                                <td><input type="button" class="operator" onclick="add('log(')" value = "log"/></td>
-                                <td><input type="button" class="custom" onclick="add('4')" value = "4"/></td>
-                                <td><input type="button" class="custom" onclick="add('5')" value = "5"/></td>
-                                <td><input type="button" class="custom" onclick="add('6')" value = "6"/></td>
-                                <td><input type="button" class="operator" onclick="add('×')" value = "×"/></td>
+                                <td><button class="operator" value = "tan(">tan</button></td>
+                                <td><button class="operator" value = "√(">√</button></td>
+                                <td><input type="button" class="custom"  value = "1"/></td>
+                                <td><input type="button" class="custom"  value = "2"/></td>
+                                <td><input type="button" class="custom"  value = "3"/></td>
+                                <td><input type="button" class="operator"  value = "-"/></td>
                             </tr>
                             <tr>
-                                <td><input type="button" class="operator" onclick="add('tan(')" value = "tan"/></td>
-                                <td><input type="button" class="operator" onclick="add('√(')" value = "√"/></td>
-                                <td><input type="button" class="custom" onclick="add('1')" value = "1"/></td>
-                                <td><input type="button" class="custom" onclick="add('2')" value = "2"/></td>
-                                <td><input type="button" class="custom" onclick="add('3')" value = "3"/></td>
-                                <td><input type="button" class="operator" onclick="add('-')" value = "-"/></td>
-                            </tr>
-                            <tr>
-                                <td><input type="button" class="operator" onclick="add('π')" value = "π"/></td>
-                                <td><input type="button" class="operator" onclick="add('e')" value = "e"/></td>
-                                <td><input type="button" class="custom" onclick="add('0')" value = "0"/></td>
-                                <td><input type="button" class="custom" onclick="add('.')" value = "."/></td>
-                                <td><input type="button" class="equals" onclick="answer()" value = "="/></td>
-                                <td><input type="button" class="operator" onclick="add('+')" value = "+"/></td>
+                                <td><input type="button" class="operator" value = "π"/></td>
+                                <td><input type="button" class="operator"  value = "e"/></td>
+                                <td><input type="button" class="custom"  value = "0"/></td>
+                                <td><input type="button" class="custom"  value = "."/></td>
+                                <td><input type="button" class="equals"  value = "="/></td>
+                                <td><input type="button" class="operator" value = "+"/></td>
                             </tr>
                         </table>
                     </div>
@@ -100,44 +101,44 @@
                                 <td colspan="6"><input type = "text" id = "input2" class="display-input" disabled></td>
                             </tr>
                             <tr>
-                                <td><input type="button" class="equals" onclick="answer()" value = "="/></td>
-                                <td><input type="button" class="operator" onclick="add('!')" value = "!"/></td>
-                                <td><input type="button" class="operator" onclick="add('(')" value = "("/></td>
-                                <td><input type="button" class="operator" onclick="add(')')" value = ")"/></td>
-                                <td><input type="button" class="operator" onclick="add('%')" value = "%"/></td>
-                                <td><input type="button" class="operator" onclick="add('^')" value = "^"/></td>
+                                <td><input type="button" class="equals"  value = "="/></td>
+                                <td><input type="button" class="operator" value = "!"/></td>
+                                <td><input type="button" class="operator"  value = "("/></td>
+                                <td><input type="button" class="operator" value = ")"/></td>
+                                <td><input type="button" class="operator"  value = "%"/></td>
+                                <td><input type="button" class="operator" value = "^"/></td>
                             </tr>
                             <tr>
-                                <td><input type="button" class="operator" onclick="add('sin')" value = "sin"/></td>
-                                <td><input type="button" class="operator" onclick="add('ln')" value = "ln"/></td>
-                                <td><input type="button" class="custom" onclick="add('7')" value = "7"/></td>
-                                <td><input type="button" class="custom" onclick="add('8')" value = "8"/></td>
-                                <td><input type="button" class="custom" onclick="add('9')" value = "9"/></td>
-                                <td><input type="button" class="operator" onclick="add('÷')" value = "÷"/></td>
+                                <td><button class="operator" value = "sin(">sin</button></td>
+                                <td><button class="operator" value = "ln(">ln</button></td>
+                                <td><input type="button" class="custom"  value = "7"/></td>
+                                <td><input type="button" class="custom"  value = "8"/></td>
+                                <td><input type="button" class="custom"  value = "9"/></td>
+                                <td><input type="button" class="operator" value = "÷"/></td>
                             </tr>
                             <tr>
-                                <td><input type="button" class="operator" onclick="add('cos(')" value = "cos"/></td>
-                                <td><input type="button" class="operator" onclick="add('log(')" value = "log"/></td>
-                                <td><input type="button" class="custom" onclick="add('4')" value = "4"/></td>
-                                <td><input type="button" class="custom" onclick="add('5')" value = "5"/></td>
-                                <td><input type="button" class="custom" onclick="add('6')" value = "6"/></td>
-                                <td><input type="button" class="operator" onclick="add('×')" value = "×"/></td>
+                                <td><button class="operator" value = "cos(">cos</button></td>
+                                <td><button class="operator" value = "log(">log</button></td>
+                                <td><input type="button" class="custom"  value = "4"/></td>
+                                <td><input type="button" class="custom" value = "5"/></td>
+                                <td><input type="button" class="custom"  value = "6"/></td>
+                                <td><input type="button" class="operator" value = "×"/></td>
                             </tr>
                             <tr>
-                                <td><input type="button" class="operator" onclick="add('tan(')" value = "tan"/></td>
-                                <td><input type="button" class="operator" onclick="add('√(')" value = "√"/></td>
-                                <td><input type="button" class="custom" onclick="add('1')" value = "1"/></td>
-                                <td><input type="button" class="custom" onclick="add('2')" value = "2"/></td>
-                                <td><input type="button" class="custom" onclick="add('3')" value = "3"/></td>
-                                <td><input type="button" class="operator" onclick="add('-')" value = "-"/></td>
+                                <td><button class="operator" value = "tan(">tan</button></td>
+                                <td><button class="operator" value = "√(">√</button></td>
+                                <td><input type="button" class="custom" value = "1"/></td>
+                                <td><input type="button" class="custom"  value = "2"/></td>
+                                <td><input type="button" class="custom" value = "3"/></td>
+                                <td><input type="button" class="operator"  value = "-"/></td>
                             </tr>
                             <tr>
-                                <td><input type="button" class="operator" onclick="add('π')" value = "π"/></td>
-                                <td><input type="button" class="operator" onclick="add('e')" value = "e"/></td>
-                                <td><input type="button" class="custom" onclick="add('0')" value = "0"/></td>
-                                <td><input type="button" class="custom" onclick="add('.')" value = "."/></td>
-                                <td><input type="button" class="operator" onclick="del()" id = "delete2" value = "CE"/></td>
-                                <td><input type="button" class="operator" onclick="add('+')" value = "+"/></td>
+                                <td><input type="button" class="operator" value = "π"/></td>
+                                <td><input type="button" class="operator"  value = "e"/></td>
+                                <td><input type="button" class="custom"  value = "0"/></td>
+                                <td><input type="button" class="custom" value = "."/></td>
+                                <td><input type="button" class="operator" id = "delete2" value = "CE"/></td>
+                                <td><input type="button" class="operator" value = "+"/></td>
                             </tr>
                         </table>
                     </div>
@@ -148,44 +149,44 @@
                                 <td colspan="6"><input type = "text" id = "input3" class="display-input" disabled></td>
                             </tr>
                             <tr>
-                                <td><input type="button" class="operator" onclick="del()"  id = "delete3" value = "CE"/></td>
-                                <td><input type="button" class="operator" onclick="add('^')" value = "^"/></td>
-                                <td><input type="button" class="operator" onclick="add('(')" value = "("/></td>
-                                <td><input type="button" class="operator" onclick="add(')')" value = ")"/></td>
-                                <td><input type="button" class="operator" onclick="add('%')" value = "%"/></td>
-                                <td><input type="button" class="operator" onclick="add('×')" value = "×"/></td>
+                                <td><input type="button" class="operator" id = "delete3" value = "CE"/></td>
+                                <td><input type="button" class="operator" value = "^"/></td>
+                                <td><input type="button" class="operator"  value = "("/></td>
+                                <td><input type="button" class="operator"  value = ")"/></td>
+                                <td><input type="button" class="operator"  value = "%"/></td>
+                                <td><input type="button" class="operator" value = "×"/></td>
 
                             </tr>
                             <tr>
-                                <td><input type="button" class="operator" onclick="add('sin')" value = "sin"/></td>
-                                <td><input type="button" class="operator" onclick="add('ln')" value = "ln"/></td>
-                                <td><input type="button" class="custom" onclick="add('7')" value = "7"/></td>
-                                <td><input type="button" class="custom" onclick="add('8')" value = "8"/></td>
-                                <td><input type="button" class="custom" onclick="add('9')" value = "9"/></td>
-                                <td><input type="button" class="operator" onclick="add('÷')" value = "÷"/></td>
+                                <td><button class="operator" value = "sin(">sin</button></td>
+                                <td><button class="operator" value = "ln(">ln</button></td>
+                                <td><input type="button" class="custom" value = "7"/></td>
+                                <td><input type="button" class="custom" value = "8"/></td>
+                                <td><input type="button" class="custom"  value = "9"/></td>
+                                <td><input type="button" class="operator" value = "÷"/></td>
                             </tr>
                             <tr>
-                                <td><input type="button" class="operator" onclick="add('cos(')" value = "cos"/></td>
-                                <td><input type="button" class="operator" onclick="add('log(')" value = "log"/></td>
-                                <td><input type="button" class="custom" onclick="add('4')" value = "4"/></td>
-                                <td><input type="button" class="custom" onclick="add('5')" value = "5"/></td>
-                                <td><input type="button" class="custom" onclick="add('6')" value = "6"/></td>
-                                <td><input type="button" class="operator" onclick="add('+')" value = "+"/></td>
+                                <td><button class="operator" value = "cos(">cos</button></td>
+                                <td><button class="operator" value = "log(">log</button></td>
+                                <td><input type="button" class="custom" value = "4"/></td>
+                                <td><input type="button" class="custom"  value = "5"/></td>
+                                <td><input type="button" class="custom" value = "6"/></td>
+                                <td><input type="button" class="operator"  value = "+"/></td>
                             </tr>
                             <tr>
-                                <td><input type="button" class="operator" onclick="add('tan(')" value = "tan"/></td>
-                                <td><input type="button" class="operator" onclick="add('√(')" value = "√"/></td>
-                                <td><input type="button" class="custom" onclick="add('1')" value = "1"/></td>
-                                <td><input type="button" class="custom" onclick="add('2')" value = "2"/></td>
-                                <td><input type="button" class="custom" onclick="add('3')" value = "3"/></td>
-                                <td><input type="button" class="operator" onclick="add('-')" value = "-"/></td>
+                                <td><button class="operator" value = "tan(">tan</button></td>
+                                <td><button class="operator" value = "√(">√</button></td>
+                                <td><input type="button" class="custom"  value = "1"/></td>
+                                <td><input type="button" class="custom" value = "2"/></td>
+                                <td><input type="button" class="custom"  value = "3"/></td>
+                                <td><input type="button" class="operator"  value = "-"/></td>
                             </tr>
                             <tr>
-                                <td><input type="button" class="operator" onclick="add('!')" value = "!"/></td>
-                                <td><input type="button" class="operator" onclick="add('e')" value = "e"/></td>
-                                <td><input type="button" class="custom" onclick="add('0')" value = "0"/></td>
-                                <td><input type="button" class="custom" onclick="add('.')" value = "."/></td>
-                                <td colspan = "2"><input type="button" class="equals" onclick="answer()" value = "="/></td>
+                                <td><input type="button" class="operator"  value = "!"/></td>
+                                <td><input type="button" class="operator" value = "e"/></td>
+                                <td><input type="button" class="custom"  value = "0"/></td>
+                                <td><input type="button" class="custom"  value = "."/></td>
+                                <td colspan = "2"><input type="button" class="equals" value = "="/></td>
 
                             </tr>
                         </table>

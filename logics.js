@@ -121,67 +121,19 @@ $(document).ready(function(e){
     // on design change, show the active calculator and hide the others
     // also set all the necessary variables to the appropriate values
     $("#design1").click(function() {
-        input = document.getElementById('input1');
-        input.value = "0";
-        operator_added = false;
-        dot_added = false;
-        deleteButton = document.getElementById('delete1');
-        color = colors.design1;
-        $("#calculator1").show();
-        $("#calculator2").hide();
-        $("#calculator3").hide();
-        $("#design1-li").attr("class","active");
-        $("#design2-li").attr("class","");
-        $("#design3-li").attr("class","");
+        setDesign1();
     });
 
     $("#design2").click(function() {
-        input = document.getElementById('input2');
-        input.value = "0";
-        operator_added = false;
-        dot_added = false;
-        deleteButton = document.getElementById('delete2');
-        color = colors.design2;
-        $("#calculator1").hide();
-        $("#calculator2").show();
-        $("#calculator3").hide();
-        $("#design1-li").attr("class","");
-        $("#design2-li").attr("class","active");
-        $("#design3-li").attr("class","");
-
+        setDesign2();
     });
 
     $("#design3").click(function() {
-        input = document.getElementById('input3');
-        input.value = "0";
-        operator_added = false;
-        dot_added = false;
-        deleteButton = document.getElementById('delete3');
-        color = colors.design3;
-        $("#calculator1").hide();
-        $("#calculator2").hide();
-        $("#calculator3").show();
-        $("#design1-li").attr("class","");
-        $("#design2-li").attr("class","");
-        $("#design3-li").attr("class","active");
+        setDesign3();
     });
 
-
-    // randomly generate the tasks
-    tasks = ["(2 ^ 3) × (ln(3π)) + √(5)",
-        "((4π ) ^ 3 - log(12.5)) ÷ 4!  ",
-        "√(16.9) + 5 × ((5!)^4) ",
-        "(π % 1.3) × (tan(1) + e^4) ",
-        "((sin(2) × cos (3))^2) ÷ 5 × e",
-        "2 × 3"
-    ];
-
-    for(var i = 0; i < 5; i++)
-    {
-        var index = getRandomInt(0,tasks.length);
-        document.getElementById('task' + (i+1).toString() ).innerHTML += " " + tasks[index];
-        tasks.splice(index,1);
-    }
+    // randomly generate the tasks for the user
+    generateTasks();
 
     // on button click record the coordinates and the timestamp of a click
     // also measure the distance and time between two clicks
@@ -210,6 +162,8 @@ $(document).ready(function(e){
             // to add it to the fitts law array
             if(click_queue.length == 2)
             {
+                // dequeue the oldest click event
+                // this way we always have two click events that we measure distance  and time between
                 previous_click = click_queue.shift();
 
                 var x1 = previous_click.x;
@@ -229,6 +183,8 @@ $(document).ready(function(e){
 
             if(button.value == "=")
             {
+                answer();
+
                 // delete the old diagrams and update it with the new
                 d3.select("svg").remove();
                 d3.select("svg").remove();
@@ -241,6 +197,19 @@ $(document).ready(function(e){
                     {design: "Design 3" , errors: errors.design3, color: colors.design3}];
 
                 drawErrorsDiagram(error_data);
+            }
+            else if(button.value == "AC")
+            {
+                click_queue = [];
+                del();
+            }
+            else if(button.value == "CE")
+            {
+                del();
+            }
+            else
+            {
+                add(button.value);
             }
         }
     });
@@ -312,7 +281,7 @@ function drawFittsDiagram(data)
 
     //Create X axis label
     main.append("text")
-        .attr("x", width / 2 )
+        .attr("x", (width - 100) / 2 )
         .attr("y",  height + 40)
         .style("font-size","15px")
         .style("text-anchor", "middle")
@@ -429,11 +398,6 @@ function drawErrorsDiagram(data)
 
 }
 
-function change_design(url)
-{
-    var stylesheet = document.getElementById("design-sheet");
-    stylesheet.setAttribute('href', url);
-}
 
 function incrementErrors(){
     if(color == colors.design1) errors.design1 += 1;
@@ -449,4 +413,86 @@ function getBaseLog(x, y)
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function setDesign1()
+{
+    change_design("design1.css");
+
+    input = document.getElementById('input1');
+    input.value = "0";
+    operator_added = false;
+    dot_added = false;
+    deleteButton = document.getElementById('delete1');
+    color = colors.design1;
+    click_queue = [];
+    $("#calculator1").show();
+    $("#calculator2").hide();
+    $("#calculator3").hide();
+    $("#design1-li").attr("class","active");
+    $("#design2-li").attr("class","");
+    $("#design3-li").attr("class","");
+}
+
+function setDesign2()
+{
+    change_design("design2.css");
+
+    input = document.getElementById('input2');
+    input.value = "0";
+    operator_added = false;
+    dot_added = false;
+    deleteButton = document.getElementById('delete2');
+    color = colors.design2;
+    click_queue = [];
+    $("#calculator1").hide();
+    $("#calculator2").show();
+    $("#calculator3").hide();
+    $("#design1-li").attr("class","");
+    $("#design2-li").attr("class","active");
+    $("#design3-li").attr("class","");
+}
+
+function setDesign3()
+{
+    change_design("design3.css");
+
+    input = document.getElementById('input3');
+    input.value = "0";
+    operator_added = false;
+    dot_added = false;
+    deleteButton = document.getElementById('delete3');
+    color = colors.design3;
+    click_queue = [];
+    $("#calculator1").hide();
+    $("#calculator2").hide();
+    $("#calculator3").show();
+    $("#design1-li").attr("class","");
+    $("#design2-li").attr("class","");
+    $("#design3-li").attr("class","active");
+}
+
+function change_design(url)
+{
+    var stylesheet = document.getElementById("design-sheet");
+    stylesheet.setAttribute('href', url);
+}
+
+function generateTasks()
+{
+    // randomly generate the tasks
+    tasks = ["(2 ^ 3) × (ln(3π)) + √(5)",
+        "((4π ) ^ 3 - log(12.5)) ÷ 4!  ",
+        "√(16.9) + 5 × ((5!)^4) ",
+        "(π % 1.3) × (tan(1) + e^4) ",
+        "((sin(2) × cos (3))^2) ÷ 5 × e",
+        "2 × 3"
+    ];
+
+    for(var i = 0; i < 5; i++)
+    {
+        var index = getRandomInt(0,tasks.length);
+        document.getElementById('task' + (i+1).toString() ).innerHTML += " " + tasks[index];
+        tasks.splice(index,1);
+    }
 }
