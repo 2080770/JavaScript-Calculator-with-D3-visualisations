@@ -11,15 +11,6 @@ var operator_added = false;
 var dot_added = false;
 var operators = ["+","-","×","÷","%","^","!"];
 
-// Used for the fitts law to calculate log to the base 2
-function getBaseLog(x, y)
-{
-    return Math.log(y) / Math.log(x);
-}
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-}
 // add value to the input screen when the user presses a button
 function add(x){
     if(deleteButton.value == "AC")    deleteButton.value = "CE";
@@ -115,6 +106,146 @@ function answer(){
     deleteButton.value = "AC";
 }
 
+var colors = {design1:"red", design2: "blue", design3: "green"};
+var color = colors.design1;
+
+var click_queue = [];
+var fitts = [];
+
+var errors = {design1: 0, design2: 0, design3: 0};
+
+$(document).ready(function(e){
+    $("#calculator2").hide();
+    $("#calculator3").hide();
+
+    // on design change, show the active calculator and hide the others
+    // also set all the necessary variables to the appropriate values
+    $("#design1").click(function() {
+        input = document.getElementById('input1');
+        input.value = "0";
+        operator_added = false;
+        dot_added = false;
+        deleteButton = document.getElementById('delete1');
+        color = colors.design1;
+        $("#calculator1").show();
+        $("#calculator2").hide();
+        $("#calculator3").hide();
+        $("#design1-li").attr("class","active");
+        $("#design2-li").attr("class","");
+        $("#design3-li").attr("class","");
+    });
+
+    $("#design2").click(function() {
+        input = document.getElementById('input2');
+        input.value = "0";
+        operator_added = false;
+        dot_added = false;
+        deleteButton = document.getElementById('delete2');
+        color = colors.design2;
+        $("#calculator1").hide();
+        $("#calculator2").show();
+        $("#calculator3").hide();
+        $("#design1-li").attr("class","");
+        $("#design2-li").attr("class","active");
+        $("#design3-li").attr("class","");
+
+    });
+
+    $("#design3").click(function() {
+        input = document.getElementById('input3');
+        input.value = "0";
+        operator_added = false;
+        dot_added = false;
+        deleteButton = document.getElementById('delete3');
+        color = colors.design3;
+        $("#calculator1").hide();
+        $("#calculator2").hide();
+        $("#calculator3").show();
+        $("#design1-li").attr("class","");
+        $("#design2-li").attr("class","");
+        $("#design3-li").attr("class","active");
+    });
+
+
+    // randomly generate the tasks
+    tasks = ["(2 ^ 3) × (ln(3π)) + √(5)",
+        "((4π ) ^ 3 - log(12.5)) ÷ 4!  ",
+        "√(16.9) + 5 × ((5!)^4) ",
+        "(π % 1.3) × (tan(1) + e^4) ",
+        "((sin(2) × cos (3))^2) ÷ 5 × e",
+        "2 × 3"
+    ];
+
+    for(var i = 0; i < 5; i++)
+    {
+        var index = getRandomInt(0,tasks.length);
+        document.getElementById('task' + (i+1).toString() ).innerHTML += " " + tasks[index];
+        tasks.splice(index,1);
+    }
+
+    // on button click record the coordinates and the timestamp of a click
+    // also measure the distance and time between two clicks
+    // to calculate the index of difficulty for each movement
+    // to later on plot the data on a graph
+    $(".frame").click(function(e){
+        var button = document.elementFromPoint(e.clientX, e.clientY);
+        console.log(button.value);
+        // if we didnt click on a button increment the mistakes
+        if(button.value === undefined || button.value === null)
+        {
+            incrementErrors();
+        }
+
+        else   // otherwise perform the fitts law calculations for this button click
+        {
+            var d = new Date();
+
+            // get the current click on the button
+            var current_click = {x:e.clientX, y:e.clientY , time: d.getTime()};
+
+            // add it to the queue of click events
+            click_queue.push(current_click);
+
+            // if the queue has 2 click events then we can measure the time and distance between them
+            // to add it to the fitts law array
+            if(click_queue.length == 2)
+            {
+                previous_click = click_queue.shift();
+
+                var x1 = previous_click.x;
+                var y1 = previous_click.y;
+
+                var x2 = current_click.x;
+                var y2 = current_click.y;
+
+                var distance = math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+                var time = (current_click.time - previous_click.time) / 1000.0;
+
+                var ID = getBaseLog(2, distance/ button.offsetWidth + 1);
+
+                fitts_entry = {time:time, ID:ID, color: color};
+                fitts.push(fitts_entry);
+            }
+
+            if(button.value == "=")
+            {
+                // delete the old diagrams and update it with the new
+                d3.select("svg").remove();
+                d3.select("svg").remove();
+
+                click_queue = [];
+                drawFittsDiagram(fitts);
+
+                error_data = [{design: "Design 1" , errors: errors.design1, color: colors.design1},
+                    {design: "Design 2" , errors: errors.design2, color: colors.design2},
+                    {design: "Design 3" , errors: errors.design3, color: colors.design3}];
+
+                drawErrorsDiagram(error_data);
+            }
+        }
+    });
+});
+
 // takes data from the array and draws the fitts law diagram for the 3 different designs
 function drawFittsDiagram(data)
 {
@@ -130,7 +261,7 @@ function drawFittsDiagram(data)
         .domain([0, d3.max(data, function(d) { return d.time; })])
         .range([ height, 0 ]);
 
-    var chart = d3.select('#graph')
+    var chart = d3.select('#fitts-graph')
         .append('svg:svg')
         .attr('width', width + margin.right + margin.left)
         .attr('height', height + margin.top + margin.bottom)
@@ -231,7 +362,7 @@ function drawFittsDiagram(data)
 function drawErrorsDiagram(data)
 {
     var margin = {top: 20, right: 15, bottom: 60, left: 60}
-        width = 400 - margin.left - margin.right,
+    width = 400 - margin.left - margin.right,
         height = 400 - margin.top - margin.bottom;
 
     var x = d3.scale.ordinal()
@@ -297,146 +428,6 @@ function drawErrorsDiagram(data)
         .style("fill", function(d){ return d.color; });
 
 }
-var colors = {design1:"red", design2: "blue", design3: "green"};
-var color = colors.design1;
-
-var click_queue = [];
-var fitts = [];
-
-var errors = {design1: 0, design2: 0, design3: 0};
-
-$(document).ready(function(e){
-    $("#calculator2").hide();
-    $("#calculator3").hide();
-
-    // on design change, show the active calculator and hide the others
-    // also set all the necessary variables to the appropriate values
-    $("#design1").click(function() {
-        input = document.getElementById('input1');
-        input.value = "0";
-        operator_added = false;
-        dot_added = false;
-        deleteButton = document.getElementById('delete1');
-        color = colors.design1;
-        $("#calculator1").show();
-        $("#calculator2").hide();
-        $("#calculator3").hide();
-        $("#design1-li").attr("class","active");
-        $("#design2-li").attr("class","");
-        $("#design3-li").attr("class","");
-    });
-
-    $("#design2").click(function() {
-        input = document.getElementById('input2');
-        input.value = "0";
-        operator_added = false;
-        dot_added = false;
-        deleteButton = document.getElementById('delete2');
-        color = colors.design2;
-        $("#calculator1").hide();
-        $("#calculator2").show();
-        $("#calculator3").hide();
-        $("#design1-li").attr("class","");
-        $("#design2-li").attr("class","active");
-        $("#design3-li").attr("class","");
-
-    });
-
-    $("#design3").click(function() {
-        input = document.getElementById('input3');
-        input.value = "0";
-        operator_added = false;
-        dot_added = false;
-        deleteButton = document.getElementById('delete3');
-        color = colors.design3;
-        $("#calculator1").hide();
-        $("#calculator2").hide();
-        $("#calculator3").show();
-        $("#design1-li").attr("class","");
-        $("#design2-li").attr("class","");
-        $("#design3-li").attr("class","active");
-    });
-
-
-    // randomly generate the tasks
-    tasks = ["(2 ^ 3) × (ln(3π)) + √(5)",
-        "((4π ) ^ 3 - log(12.5)) ÷ 4!  ",
-        "√(16.9) + 5 × ((5!)^4) ",
-        "(π % 1.3) × (tan(1) + e^4) ",
-        "((sin(2) × cos (3))^2) ÷ 5 × e",
-        "2 × 3"
-    ];
-
-    for(var i = 0; i < 5; i++)
-    {
-        var index = getRandomInt(0,tasks.length);
-        document.getElementById('task' + (i+1).toString() ).innerHTML += " " + tasks[index];
-        tasks.splice(index,1);
-    }
-
-    // on button click record the coordinates and the timestamp of a click
-    // also measure the distance and time between two clicks
-    // to calculate the index of difficulty for each movement
-    // to later on plot the data on a graph
-    $(".frame").click(function(e){
-        var button = document.elementFromPoint(e.clientX, e.clientY);
-        console.log(button.value);
-        // if we didnt click on a button increment the mistakes
-        if(button.value === undefined || button.value === null)
-        {
-            incrementErrors();
-        }
-
-        else // otherwise perform the fitts law calculations for this button click
-        {
-            var d = new Date();
-
-            // get the current click on the button
-            var current_click = {x:e.clientX, y:e.clientY , time: d.getTime()};
-
-            // add it to the queue of click events
-            click_queue.push(current_click);
-
-            // if the queue has 2 click events then we can measure the time and distance between them
-            // to add it to the fitts law array
-            if(click_queue.length == 2)
-            {
-                previous_click = click_queue.shift();
-
-                var x1 = previous_click.x;
-                var y1 = previous_click.y;
-
-                var x2 = current_click.x;
-                var y2 = current_click.y;
-
-                var distance = math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
-                var time = (current_click.time - previous_click.time) / 1000.0;
-
-                var ID = getBaseLog(2, distance/ button.offsetWidth + 1);
-
-                fitts_entry = {time:time, ID:ID, color: color};
-                fitts.push(fitts_entry);
-            }
-
-            if(button.value == "=")
-            {
-                // delete the old diagram and update it with the new
-                d3.select("svg").remove();
-                d3.select("svg").remove();
-
-                click_queue = [];
-                drawFittsDiagram(fitts);
-
-                error_data = [{design: "Design 1" , errors: errors.design1, color: colors.design1},
-                    {design: "Design 2" , errors: errors.design2, color: colors.design2},
-                    {design: "Design 3" , errors: errors.design3, color: colors.design3}];
-
-                drawErrorsDiagram(error_data);
-            }
-        }
-    });
-});
-
 
 function change_design(url)
 {
@@ -448,4 +439,14 @@ function incrementErrors(){
     if(color == colors.design1) errors.design1 += 1;
     else if(color == colors.design2) errors.design2 += 1;
     else if(color == colors.design3) errors.design3 += 1;
+}
+
+// Used for the fitts law to calculate log to the base 2
+function getBaseLog(x, y)
+{
+    return Math.log(y) / Math.log(x);
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
 }
