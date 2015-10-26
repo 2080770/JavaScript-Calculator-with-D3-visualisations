@@ -1,0 +1,44 @@
+
+.alert{
+    margin-left:50px;
+    font-size:16px;
+    box-shadow: 0px 0px 10px 1px #888888;
+}
+.tasks{
+    box-shadow: 0px 0px 10px 1px #888888;
+}
+
+.navbar .navbar-nav {
+    display: inline-block;
+    float: none;
+}
+
+.navbar .navbar-collapse {
+    text-align: center;
+}
+
+.main text {
+    font: 11px sans-serif;
+}
+
+/* fitts scatterplot diagram */
+.axis path,
+.axis line{
+    fill: none;
+    stroke: black;
+}
+
+.line{
+    fill: none;
+    stroke: blue;
+    stroke-width: 2px;
+}
+
+.tick text{
+    font-size: 12px;
+}
+
+.tick line{
+    opacity: 0.2;
+}
+
