@@ -220,7 +220,7 @@ function drawFittsDiagram(data)
 {
     var margin = {top: 20, right: 15, bottom: 60, left: 60}
         , width = 800 - margin.left - margin.right
-        , height = 400 - margin.top - margin.bottom;
+        , height = 500 - margin.top - margin.bottom;
 
     var x = d3.scale.linear()
         .domain([0, d3.max(data, function(d) { return d.ID; })])
@@ -234,13 +234,13 @@ function drawFittsDiagram(data)
         .append('svg:svg')
         .attr('width', width + margin.right + margin.left)
         .attr('height', height + margin.top + margin.bottom)
-        .attr('class', 'chart')
+        .attr('class', 'chart');
 
     var main = chart.append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
         .attr('width', width)
         .attr('height', height)
-        .attr('class', 'main')
+        .attr('class', 'main');
 
     // draw the x axis
     var xAxis = d3.svg.axis()
@@ -489,7 +489,7 @@ function generateTasks()
         "2 × 3"
     ];
 
-    for(var i = 0; i < 5; i++)
+    for(var i = 0; i < 4; i++)
     {
         var index = getRandomInt(0,tasks.length);
         document.getElementById('task' + (i+1).toString() ).innerHTML += " " + tasks[index];
